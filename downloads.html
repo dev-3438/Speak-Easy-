@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Downloads & Resources - SpeakEasy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sage-green: #A8C8A8;
+            --warm-cream: #F5F3F0;
+            --gentle-lavender: #D4C5E8;
+            --muted-coral: #F4C2A1;
+            --deep-charcoal: #2C3E50;
+            --medium-gray: #6C7B7F;
+            --soft-blue: #B8D4E3;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--warm-cream) 0%, #F0F7F0 100%);
+            color: var(--deep-charcoal);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--deep-charcoal) 0%, var(--sage-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        
+        .nav-blur {
+            backdrop-filter: blur(10px);
+            background: rgba(245, 243, 240, 0.9);
+        }
+        
+        .resource-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(168, 200, 168, 0.2);
+        }
+        
+        .download-button {
+            transition: all 0.3s ease;
+        }
+        
+        .download-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .download-progress {
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .resource-preview {
+            background: linear-gradient(135deg, var(--sage-green)/10, var(--gentle-lavender)/10);
+            border: 2px dashed var(--sage-green);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-sage-green/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-sage-green to-gentle-lavender rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">SE</span>
+                    </div>
+                    <span class="text-xl font-bold gradient-text">SpeakEasy</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Home</a>
+                    <a href="vocabulary.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Vocabulary</a>
+                    <a href="grammar.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Grammar</a>
+                    <a href="conversation.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Conversation</a>
+                    <a href="tips.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Tips</a>
+                    <a href="quizzes.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Quizzes</a>
+                    <a href="downloads.html" class="text-deep-charcoal hover:text-sage-green font-medium transition-colors">Downloads</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="w-8 h-8 bg-muted-coral rounded-full flex items-center justify-center">
+                        <span class="text-white text-sm font-medium">7</span>
+                    </div>
+                    <button class="md:hidden p-2 rounded-lg bg-sage-green/10">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="pt-24 pb-12 bg-gradient-to-br from-sage-green/10 to-gentle-lavender/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h1 class="text-5xl font-bold gradient-text mb-4">Downloads & Resources</h1>
+                <p class="text-xl text-medium-gray max-w-2xl mx-auto">
+                    Access comprehensive study materials, guides, and tools to accelerate your English learning journey.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resource Categories -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-deep-charcoal mb-4">Study Materials</h2>
+                <p class="text-lg text-medium-gray">Choose from our comprehensive collection of learning resources</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-4 gap-8">
+                <!-- Sidebar Filters -->
+                <div class="lg:col-span-1">
+                    <div class="resource-card rounded-2xl p-6 mb-6">
+                        <h3 class="font-semibold text-deep-charcoal mb-4">Filter by Type</h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-sage-green rounded" checked>
+                                <span class="text-sm">PDF Guides</span>
+                                <span class="text-xs text-medium-gray ml-auto">24</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-sage-green rounded" checked>
+                                <span class="text-sm">Audio Files</span>
+                                <span class="text-xs text-medium-gray ml-auto">18</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-sage-green rounded" checked>
+                                <span class="text-sm">Worksheets</span>
+                                <span class="text-xs text-medium-gray ml-auto">32</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-sage-green rounded" checked>
+                                <span class="text-sm">Video Lessons</span>
+                                <span class="text-xs text-medium-gray ml-auto">15</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card rounded-2xl p-6 mb-6">
+                        <h3 class="font-semibold text-deep-charcoal mb-4">Difficulty Level</h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-sage-green rounded" checked>
+                                <span class="text-sm">Beginner</span>
+                                <span class="text-xs text-medium-gray ml-auto">12</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-sage-green rounded" checked>
+                                <span class="text-sm">Intermediate</span>
+                                <span class="text-xs text-medium-gray ml-auto">18</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-sage-green rounded" checked>
+                                <span class="text-sm">Advanced</span>
+                                <span class="text-xs text-medium-gray ml-auto">8</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card rounded-2xl p-6">
+                        <h3 class="font-semibold text-deep-charcoal mb-4">Your Downloads</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">Downloaded</span>
+                                <span class="text-sm font-medium text-sage-green">15</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">This Week</span>
+                                <span class="text-sm font-medium text-muted-coral">7</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">Favorites</span>
+                                <span class="text-sm font-medium text-gentle-lavender">12</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Resources Grid -->
+                <div class="lg:col-span-3">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Grammar Guide -->
+                        <div class="resource-card rounded-2xl p-6 card-hover">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-sage-green/20 rounded-xl flex items-center justify-center mr-4">
+                                    <svg class="w-6 h-6 text-sage-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-deep-charcoal">Complete Grammar Guide</h3>
+                                    <p class="text-sm text-medium-gray">PDF • 45 pages</p>
+                                </div>
+                            </div>
+                            <p class="text-medium-gray mb-4 text-sm leading-relaxed">
+                                Comprehensive grammar reference covering all 12 tenses, parts of speech, and common mistakes with examples.
+                            </p>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Beginner</span>
+                                <span class="text-xs text-medium-gray">⭐ 4.9 (234 reviews)</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <button class="download-button flex-1 bg-sage-green text-white py-2 px-4 rounded-lg font-medium hover:bg-sage-green/90 transition-colors" onclick="downloadResource('grammar-guide')">
+                                    Download PDF
+                                </button>
+                                <button class="p-2 rounded-lg border border-sage-green/20 hover:bg-sage-green/10 transition-colors" onclick="previewResource('grammar-guide')">
+                                    <svg class="w-5 h-5 text-sage-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                </button>
+                                <button class="p-2 rounded-lg border border-sage-green/20 hover:bg-sage-green/10 transition-colors">
+                                    <svg class="w-5 h-5 text-muted-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="mt-3 bg-gray-100 rounded-full h-2" style="display: none;" id="progress-grammar-guide">
+                                <div class="download-progress bg-sage-green h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Vocabulary Flashcards -->
+                        <div class="resource-card rounded-2xl p-6 card-hover">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-gentle-lavender/20 rounded-xl flex items-center justify-center mr-4">
+                                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-deep-charcoal">Essential Vocabulary</h3>
+                                    <p class="text-sm text-medium-gray">Flashcards • 500 words</p>
+                                </div>
+                            </div>
+                            <p class="text-medium-gray mb-4 text-sm leading-relaxed">
+                                500 most common English words with definitions, examples, and pronunciation guides. Perfect for daily practice.
+                            </p>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Intermediate</span>
+                                <span class="text-xs text-medium-gray">⭐ 4.8 (189 reviews)</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <button class="download-button flex-1 bg-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-purple-600/90 transition-colors" onclick="downloadResource('vocabulary-cards')">
+                                    Download Set
+                                </button>
+                                <button class="p-2 rounded-lg border border-sage-green/20 hover:bg-sage-green/10 transition-colors" onclick="previewResource('vocabulary-cards')">
+                                    <svg class="w-5 h-5 text-sage-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                </button>
+                                <button class="p-2 rounded-lg border border-sage-green/20 hover:bg-sage-green/10 transition-colors">
+                                    <svg class="w-5 h-5 text-muted-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="mt-3 bg-gray-100 rounded-full h-2" style="display: none;" id="progress-vocabulary-cards">
+                                <div class="download-progress bg-purple-600 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Conversation Scripts -->
+                        <div class="resource-card rounded-2xl p-6 card-hover">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-muted-coral/20 rounded-xl flex items-center justify-center mr-4">
+                                    <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2v-6a2 2 0 012-2h8z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-deep-charcoal">Conversation Scripts</h3>
+                                    <p class="text-sm text-medium-gray">PDF • 25 scenarios</p>
+                                </div>
+                            </div>
+                            <p class="text-medium-gray mb-4 text-sm leading-relaxed">
+                                Real-life conversation scenarios for practice including restaurants, airports, job interviews, and social situations.
+                            </p>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">All Levels</span>
+                                <span class="text-xs text-medium-gray">⭐ 4.7 (156 reviews)</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <button class="download-button flex-1 bg-orange-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-orange-600/90 transition-colors" onclick="downloadResource('conversation-scripts')">
+                                    Download PDF
+                                </button>
+                                <button class="p-2 rounded-lg border border-sage-green/20 hover:bg-sage-green/10 transition-colors" onclick="previewResource('conversation-scripts')">
+                                    <svg class="w-5 h-5 text-sage-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                </button>
+                                <button class="p-2 rounded-lg border border-sage-green/20 hover:bg-sage-green/10 transition-colors">
+                                    <svg class="w-5 h-5 text-muted-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="mt-3 bg-gray-100 rounded-full h-2" style="display: none;" id="progress-conversation-scripts">
+                                <div class="download-progress bg-orange-600 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pronunciation Guide -->
+                        <div class="resource-card rounded-2xl p-6 card-hover">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-soft-blue/20 rounded-xl flex items-center justify-center mr-4">
+                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 14.142M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-deep-charcoal">Pronunciation Guide</h3>
+                                    <p class="text-sm text-medium-gray">Audio + PDF • 50 sounds</p>
+                                </div>
+                            </div>
+                            <p class="text-medium-gray mb-4 text-sm leading-relaxed">
+                                Complete guide to English pronunciation with audio examples for every sound, stress patterns, and intonation practice.
+                            </p>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Advanced</span>
+                                <span class="text-xs text-medium-gray">⭐ 4.9 (203 reviews)</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <button class="download-button flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-600/90 transition-colors" onclick="downloadResource('pronunciation-guide')">
+                                    Download Bundle
+                                </button>
+                                <button class="p-2 rounded-lg border border-sage-green/20 hover:bg-sage-green/10 transition-colors" onclick="previewResource('pronunciation-guide')">
+                                    <svg class="w-5 h-5 text-sage-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                </button>
+                                <button class="p-2 rounded-lg border border-sage-green/20 hover:bg-sage-green/10 transition-colors">
+                                    <svg class="w-5 h-5 text-muted-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="mt-3 bg-gray-100 rounded-full h-2" style="display: none;" id="progress-pronunciation-guide">
+                                <div class="download-progress bg-blue-600 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Study Planner -->
+                        <div class="resource-card rounded-2xl p-6 card-hover">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mr-4">
+                                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-deep-charcoal">Study Planner</h3>
+                                    <p class="text-sm text-medium-gray">PDF • 12 months</p>
+                                </div>
+                            </div>
+                            <p class="text-medium-gray mb-4 text-sm leading-relaxed">
+                                Organized 12-month study plan with daily goals, weekly reviews, and progress tracking templates.
+                            </p>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">All Levels</span>
+                                <span class="text-xs text-medium-gray">⭐ 4.6 (178 reviews)</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <button class="download-button flex-1 bg-green-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-green-600/90 transition-colors" onclick="downloadResource('study-planner')">
+                                    Download PDF
+                                </button>
+                                <button class="p-2 rounded-lg border border-sage-green/20 hover:bg-sage-green/10 transition-colors" onclick="previewResource('study-planner')">
+                                    <svg class="w-5 h-5 text-sage-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                </button>
+                                <button class="p-2 rounded-lg border border-sage-green/20 hover:bg-sage-green/10 transition-colors">
+                                    <svg class="w-5 h-5 text-muted-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="mt-3 bg-gray-100 rounded-full h-2" style="display: none;" id="progress-study-planner">
+                                <div class="download-progress bg-green-600 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Load More Button -->
+                    <div class="text-center mt-12">
+                        <button class="bg-white border border-sage-green/20 px-8 py-3 rounded-xl font-medium hover:bg-sage-green/10 transition-colors">
+                            Load More Resources
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Preview Modal -->
+    <div id="preview-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-50" onclick="closePreview()"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h3 class="text-xl font-bold text-deep-charcoal" id="preview-title">Resource Preview</h3>
+                    <button onclick="closePreview()" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+                    <div class="resource-preview rounded-xl p-8 text-center mb-6">
+                        <svg class="w-16 h-16 text-sage-green mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <h4 class="text-lg font-semibold text-deep-charcoal mb-2">PDF Preview</h4>
+                        <p class="text-medium-gray">Click download to get the full version</p>
+                    </div>
+                    <div class="text-center">
+                        <button class="bg-sage-green text-white px-6 py-3 rounded-xl font-medium hover:bg-sage-green/90 transition-colors">
+                            Download Full Version
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-deep-charcoal text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-2 mb-4">
+                    <div class="w-8 h-8 bg-gradient-to-br from-sage-green to-gentle-lavender rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">SE</span>
+                    </div>
+                    <span class="text-xl font-bold">SpeakEasy</span>
+                </div>
+                <p class="text-gray-400 mb-6">Empowering students to speak English with confidence</p>
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a>
+                </div>
+                <p class="text-gray-500 text-sm">© 2025 SpeakEasy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function downloadResource(resourceId) {
+            const progressBar = document.getElementById(`progress-${resourceId}`);
+            const downloadButton = event.target;
+            
+            // Show progress bar
+            progressBar.parentElement.style.display = 'block';
+            
+            // Simulate download progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 100) progress = 100;
+                
+                progressBar.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    
+                    // Reset after completion
+                    setTimeout(() => {
+                        progressBar.parentElement.style.display = 'none';
+                        progressBar.style.width = '0%';
+                        
+                        // Show success message
+                        showNotification(`${resourceId.replace('-', ' ')} downloaded successfully!`, 'success');
+                    }, 500);
+                }
+            }, 100);
+            
+            // Update button text
+            downloadButton.textContent = 'Downloading...';
+            downloadButton.disabled = true;
+            
+            setTimeout(() => {
+                downloadButton.textContent = 'Downloaded ✓';
+                downloadButton.classList.remove('bg-sage-green', 'bg-purple-600', 'bg-orange-600', 'bg-blue-600', 'bg-green-600');
+                downloadButton.classList.add('bg-gray-400');
+            }, 2000);
+        }
+        
+        function previewResource(resourceId) {
+            const modal = document.getElementById('preview-modal');
+            const title = document.getElementById('preview-title');
+            
+            // Set preview title based on resource
+            const titles = {
+                'grammar-guide': 'Complete Grammar Guide - Preview',
+                'vocabulary-cards': 'Essential Vocabulary Flashcards - Preview',
+                'conversation-scripts': 'Conversation Scripts - Preview',
+                'pronunciation-guide': 'Pronunciation Guide - Preview',
+                'study-planner': 'Study Planner - Preview'
+            };
+            
+            title.textContent = titles[resourceId] || 'Resource Preview';
+            modal.classList.remove('hidden');
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closePreview() {
+            const modal = document.getElementById('preview-modal');
+            modal.classList.add('hidden');
+            
+            // Restore body scroll
+            document.body.style.overflow = 'auto';
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-20 right-4 z-50 px-6 py-4 rounded-xl shadow-lg transform translate-x-full transition-transform duration-300`;
+            
+            switch(type) {
+                case 'success':
+                    notification.classList.add('bg-green-500', 'text-white');
+                    break;
+                case 'error':
+                    notification.classList.add('bg-red-500', 'text-white');
+                    break;
+                default:
+                    notification.classList.add('bg-blue-500', 'text-white');
+            }
+            
+            notification.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-white hover:text-gray-200">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.remove();
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('preview-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePreview();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePreview();
+            }
+        });
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>

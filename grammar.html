@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Guide - SpeakEasy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sage-green: #A8C8A8;
+            --warm-cream: #F5F3F0;
+            --gentle-lavender: #D4C5E8;
+            --muted-coral: #F4C2A1;
+            --deep-charcoal: #2C3E50;
+            --medium-gray: #6C7B7F;
+            --soft-blue: #B8D4E3;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--warm-cream) 0%, #F0F7F0 100%);
+            color: var(--deep-charcoal);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--deep-charcoal) 0%, var(--sage-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        
+        .nav-blur {
+            backdrop-filter: blur(10px);
+            background: rgba(245, 243, 240, 0.9);
+        }
+        
+        .tense-timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        .tense-timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--muted-coral) 0%, var(--sage-green) 50%, var(--gentle-lavender) 100%);
+            border-radius: 2px;
+            z-index: 1;
+        }
+        
+        .tense-point {
+            position: relative;
+            z-index: 2;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tense-point:hover {
+            transform: scale(1.1);
+        }
+        
+        .tense-point.active {
+            transform: scale(1.2);
+        }
+        
+        .grammar-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(168, 200, 168, 0.2);
+        }
+        
+        .rule-highlight {
+            background: linear-gradient(135deg, var(--sage-green)/20, var(--gentle-lavender)/20);
+            border-left: 4px solid var(--sage-green);
+        }
+        
+        .example-box {
+            background: rgba(168, 200, 168, 0.1);
+            border: 1px solid rgba(168, 200, 168, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-sage-green/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-sage-green to-gentle-lavender rounded-lg flex items-center justify-center">
+                        <span class=" font-bold text-sm">SE</span>
+                    </div>
+                    <span class="text-xl font-bold gradient-text">SpeakEasy</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Home</a>
+                    <a href="vocabulary.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Vocabulary</a>
+                    <a href="grammar.html" class="text-deep-charcoal hover:text-sage-green font-medium transition-colors">Grammar</a>
+                    <a href="conversation.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Conversation</a>
+                    <a href="tips.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Tips</a>
+                    <a href="quizzes.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Quizzes</a>
+                    <a href="downloads.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Downloads</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="w-8 h-8 bg-muted-coral rounded-full flex items-center justify-center">
+                        <span class="text-white text-sm font-medium">7</span>
+                    </div>
+                    <button class="md:hidden p-2 rounded-lg bg-sage-green/10">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="pt-24 pb-12 bg-gradient-to-br from-sage-green/10 to-gentle-lavender/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h1 class="text-5xl font-bold gradient-text mb-4">Grammar Guide</h1>
+                <p class="text-xl text-medium-gray max-w-2xl mx-auto">
+                    Master English grammar with comprehensive tense explanations, examples, and interactive exercises.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tense Timeline -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-deep-charcoal mb-4">12 English Tenses Timeline</h2>
+                <p class="text-lg text-medium-gray">Click on any point to explore the tense in detail</p>
+            </div>
+            
+            <div class="tense-timeline max-w-4xl mx-auto">
+                <div class="grid grid-cols-3 gap-8 text-center">
+                    <!-- Past Tenses -->
+                    <div class="space-y-6">
+                        <h3 class="text-xl font-semibold text-muted-coral mb-6">Past</h3>
+                        <div class="tense-point" data-tense="simple-past">
+                            <div class="w-16 h-16 bg-muted-coral rounded-full flex items-center justify-center mx-auto mb-2">
+                                <span class="text-white font-bold text-sm">SP</span>
+                            </div>
+                            <p class="text-sm font-medium">Simple Past</p>
+                        </div>
+                        <div class="tense-point" data-tense="past-continuous">
+                            <div class="w-16 h-16 bg-orange-400 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <span class="text-white font-bold text-sm">PC</span>
+                            </div>
+                            <p class="text-sm font-medium">Past Continuous</p>
+                        </div>
+                        <div class="tense-point" data-tense="past-perfect">
+                            <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <span class="text-white font-bold text-sm">PP</span>
+                            </div>
+                            <p class="text-sm font-medium">Past Perfect</p>
+                        </div>
+                        <div class="tense-point" data-tense="past-perfect-continuous">
+                            <div class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <span class="text-white font-bold text-xs">PPC</span>
+                            </div>
+                            <p class="text-sm font-medium">Past Perfect Continuous</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Present Tenses -->
+                    <div class="space-y-6">
+                        <h3 class="text-xl font-semibold text-sage-green mb-6">Present</h3>
+                        <div class="tense-point active" data-tense="simple-present">
+                            <div class="w-16 h-16 bg-orange-400 rounded-full flex items-center justify-center mx-auto mb-2" id = "psimple">
+                                <span class="text-white font-bold text-sm">SP</span>
+                            </div>
+                            <p class="text-sm font-medium">Simple Present</p>
+                        </div>
+                        <button 
+    class="tense-point w-full text-left" 
+    data-tense="present-continuous"
+    onclick="showPresentContinuous()"
+>
+    <div class="w-16 h-16 bg-green-400 rounded-full flex items-center justify-center mx-auto mb-2" id="pcontinuous">
+        <span class="text-white font-bold text-sm">PC</span>
+    </div>
+    <p class="text-sm font-medium">Present Continuous</p>
+</button>
+
+                        <div class="tense-point" data-tense="present-perfect">
+                            <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <span class="text-white font-bold text-sm">PP</span>
+                            </div>
+                            <p class="text-sm font-medium">Present Perfect</p>
+                        </div>
+                        <div class="tense-point" data-tense="present-perfect-continuous">
+                            <div class="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <span class="text-white font-bold text-xs">PPC</span>
+                            </div>
+                            <p class="text-sm font-medium">Present Perfect Continuous</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Future Tenses -->
+                    <div class="space-y-6">
+                        <h3 class="text-xl font-semibold text-gentle-lavender mb-6">Future</h3>
+                        <div class="tense-point" data-tense="simple-future">
+                            <div class="w-16 h-16 bg-gentle-lavender rounded-full flex items-center justify-center mx-auto mb-2">
+                                <span class="text-white font-bold text-sm">SF</span>
+                            </div>
+                            <p class="text-sm font-medium">Simple Future</p>
+                        </div>
+                        <div class="tense-point" data-tense="future-continuous">
+                            <div class="w-16 h-16 bg-purple-400 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <span class="text-white font-bold text-sm">FC</span>
+                            </div>
+                            <p class="text-sm font-medium">Future Continuous</p>
+                        </div>
+                        <div class="tense-point" data-tense="future-perfect">
+                            <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <span class="text-white font-bold text-sm">FP</span>
+                            </div>
+                            <p class="text-sm font-medium">Future Perfect</p>
+                        </div>
+                        <div class="tense-point" data-tense="future-perfect-continuous">
+                            <div class="w-16 h-16 bg-violet-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <span class="text-white font-bold text-xs">FPC</span>
+                            </div>
+                            <p class="text-sm font-medium">Future Perfect Continuous</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Grammar Content -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Grammar Rules -->
+                <div class="lg:col-span-2">
+                    <div id="grammar-content">
+                        <!-- Simple Present Tense (Default) -->
+                        <div id="simple-present" class="grammar-section">
+                            <div class="grammar-card rounded-2xl p-8 mb-8">
+                                <div class="flex items-center mb-6">
+                                    <div class="w-12 h-12 bg-sage-green rounded-xl flex items-center justify-center mr-4">
+                                        <span class="text-white font-bold">SP</span>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-2xl font-bold text-deep-charcoal">Simple Present Tense</h2>
+                                        <p class="text-medium-gray">For habitual actions and general truths</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="rule-highlight rounded-xl p-6 mb-6">
+                                    <h3 class="font-semibold text-deep-charcoal mb-3">Structure:</h3>
+                                    <div class="bg-white rounded-lg p-4 font-mono text-sage-green">
+                                        Subject + Base Verb (+ s/es for he/she/it)
+                                    </div>
+                                </div>
+                                
+                                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                                    <div>
+                                        <h4 class="font-semibold text-deep-charcoal mb-3">When to Use:</h4>
+                                        <ul class="space-y-2 text-sm text-medium-gray">
+                                            <li class="flex items-start">
+                                                <svg class="w-4 h-4 text-sage-green mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                Daily habits and routines
+                                            </li>
+                                            <li class="flex items-start">
+                                                <svg class="w-4 h-4 text-sage-green mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                General truths and facts
+                                            </li>
+                                            <li class="flex items-start">
+                                                <svg class="w-4 h-4 text-sage-green mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                Fixed schedules and timetables
+                                            </li>
+                                            <li class="flex items-start">
+                                                <svg class="w-4 h-4 text-sage-green mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                Feelings and emotions
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h4 class="font-semibold text-deep-charcoal mb-3">Time Expressions:</h4>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span class="bg-sage-green/20 text-sage-green px-3 py-1 rounded-full text-xs">always</span>
+                                            <span class="bg-sage-green/20 text-sage-green px-3 py-1 rounded-full text-xs">usually</span>
+                                            <span class="bg-sage-green/20 text-sage-green px-3 py-1 rounded-full text-xs">often</span>
+                                            <span class="bg-sage-green/20 text-sage-green px-3 py-1 rounded-full text-xs">sometimes</span>
+                                            <span class="bg-sage-green/20 text-sage-green px-3 py-1 rounded-full text-xs">never</span>
+                                            <span class="bg-sage-green/20 text-sage-green px-3 py-1 rounded-full text-xs">every day</span>
+                                            <span class="bg-sage-green/20 text-sage-green px-3 py-1 rounded-full text-xs">on Mondays</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="example-box rounded-xl p-6">
+                                    <h4 class="font-semibold text-deep-charcoal mb-4">Examples:</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex items-start space-x-3">
+                                            <div class="w-6 h-6 bg-sage-green rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <span class="text-white text-xs font-bold">1</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-deep-charcoal">I drink coffee every morning.</p>
+                                                <p class="text-sm text-medium-gray">Daily routine</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start space-x-3">
+                                            <div class="w-6 h-6 bg-sage-green rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <span class="text-white text-xs font-bold">2</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-deep-charcoal">The sun rises in the east.</p>
+                                                <p class="text-sm text-medium-gray">General truth</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start space-x-3">
+                                            <div class="w-6 h-6 bg-sage-green rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <span class="text-white text-xs font-bold">3</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-deep-charcoal">She works at a hospital.</p>
+                                                <p class="text-sm text-medium-gray">Permanent situation</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="lg:col-span-1">
+                    <!-- Quick Reference -->
+                    <div class="bg-white rounded-2xl p-6 mb-6 border border-sage-green/20">
+                        <h3 class="font-semibold text-deep-charcoal mb-4">Quick Reference</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">Verb Forms</span>
+                                <button class="text-sage-green text-sm hover:underline">View</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">Irregular Verbs</span>
+                                <button class="text-sage-green text-sm hover:underline">150+</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">Common Mistakes</span>
+                                <button class="text-sage-green text-sm hover:underline">25</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">Grammar Rules</span>
+                                <button class="text-sage-green text-sm hover:underline">50+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Practice Exercises -->
+                    <div class="bg-white rounded-2xl p-6 mb-6 border border-gentle-lavender/20">
+                        <h3 class="font-semibold text-deep-charcoal mb-4">Practice Exercises</h3>
+                        <div class="space-y-3">
+                            <button class="w-full text-left p-3 rounded-xl bg-sage-green/10 hover:bg-sage-green/20 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium">Fill in the Blanks</span>
+                                    <span class="text-xs text-sage-green">10 questions</span>
+                                </div>
+                            </button>
+                            <button class="w-full text-left p-3 rounded-xl bg-gentle-lavender/10 hover:bg-gentle-lavender/20 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium">Sentence Correction</span>
+                                    <span class="text-xs text-purple-600">15 questions</span>
+                                </div>
+                            </button>
+                            <button class="w-full text-left p-3 rounded-xl bg-muted-coral/10 hover:bg-muted-coral/20 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium">Tense Transformation</span>
+                                    <span class="text-xs text-orange-600">12 questions</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Tracker -->
+                    <div class="bg-white rounded-2xl p-6 border border-muted-coral/20">
+                        <h3 class="font-semibold text-deep-charcoal mb-4">Your Progress</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-sm">Tenses Mastered</span>
+                                    <span class="text-sm font-medium text-sage-green">8/12</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-sage-green h-2 rounded-full" style="width: 67%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-sm">Exercises Completed</span>
+                                    <span class="text-sm font-medium text-muted-coral">24/50</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-muted-coral h-2 rounded-full" style="width: 48%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-sm">Accuracy Rate</span>
+                                    <span class="text-sm font-medium text-gentle-lavender">87%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-gentle-lavender h-2 rounded-full" style="width: 87%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="w-full mt-4 bg-muted-coral text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-muted-coral/90 transition-colors">
+                            Continue Learning
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-deep-charcoal text-white py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-2 mb-4">
+                    <div class="w-8 h-8 bg-gradient-to-br from-sage-green to-gentle-lavender rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">SE</span>
+                    </div>
+                    <span class="text-xl font-bold">SpeakEasy</span>
+                </div>
+                <p class="text-gray-400 mb-6">Empowering students to speak English with confidence</p>
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a>
+                </div>
+                <p class="text-gray-500 text-sm">© 2025 SpeakEasy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

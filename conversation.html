@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversation Practice - SpeakEasy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sage-green: #A8C8A8;
+            --warm-cream: #F5F3F0;
+            --gentle-lavender: #D4C5E8;
+            --muted-coral: #F4C2A1;
+            --deep-charcoal: #2C3E50;
+            --medium-gray: #6C7B7F;
+            --soft-blue: #B8D4E3;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--warm-cream) 0%, #F0F7F0 100%);
+            color: var(--deep-charcoal);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--deep-charcoal) 0%, var(--sage-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        
+        .nav-blur {
+            backdrop-filter: blur(10px);
+            background: rgba(245, 243, 240, 0.9);
+        }
+        
+        .conversation-bubble {
+            position: relative;
+            padding: 1rem 1.5rem;
+            border-radius: 1.5rem;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        
+        .conversation-bubble.user {
+            background: var(--sage-green);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 0.5rem;
+        }
+        
+        .conversation-bubble.ai {
+            background: white;
+            color: var(--deep-charcoal);
+            border: 1px solid var(--sage-green);
+            margin-right: auto;
+            border-bottom-left-radius: 0.5rem;
+        }
+        
+        .scenario-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(168, 200, 168, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .scenario-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        .scenario-card.active {
+            border-color: var(--sage-green);
+            background: rgba(168, 200, 168, 0.1);
+        }
+        
+        .recording-button {
+            transition: all 0.3s ease;
+        }
+        
+        .recording-button.recording {
+            background: var(--muted-coral);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .pronunciation-wave {
+            display: none;
+            height: 40px;
+            background: linear-gradient(90deg, var(--sage-green), var(--gentle-lavender));
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pronunciation-wave.active {
+            display: block;
+            animation: wave 2s infinite;
+        }
+        
+        @keyframes wave {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-sage-green/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-sage-green to-gentle-lavender rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">SE</span>
+                    </div>
+                    <span class="text-xl font-bold gradient-text">SpeakEasy</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Home</a>
+                    <a href="vocabulary.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Vocabulary</a>
+                    <a href="grammar.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Grammar</a>
+                    <a href="conversation.html" class="text-deep-charcoal hover:text-sage-green font-medium transition-colors">Conversation</a>
+                    <a href="tips.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Tips</a>
+                    <a href="quizzes.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Quizzes</a>
+                    <a href="downloads.html" class="text-medium-gray hover:text-sage-green font-medium transition-colors">Downloads</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="w-8 h-8 bg-muted-coral rounded-full flex items-center justify-center">
+                        <span class="text-white text-sm font-medium">7</span>
+                    </div>
+                    <button class="md:hidden p-2 rounded-lg bg-sage-green/10">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="pt-24 pb-12 bg-gradient-to-br from-sage-green/10 to-gentle-lavender/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h1 class="text-5xl font-bold gradient-text mb-4">Conversation Practice</h1>
+                <p class="text-xl text-medium-gray max-w-2xl mx-auto">
+                    Practice real-life conversations with AI assistance. Improve your speaking skills through interactive dialogues and pronunciation feedback.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-4 gap-8">
+                <!-- Scenario Selection -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-2xl p-6 border border-sage-green/20 mb-6">
+                        <h3 class="font-semibold text-deep-charcoal mb-4">Choose Scenario</h3>
+                        <div class="space-y-3">
+                            <div class="scenario-card active rounded-xl p-4" data-scenario="restaurant">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-deep-charcoal text-sm">At a Restaurant</p>
+                                        <p class="text-xs text-medium-gray">Ordering food</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="scenario-card rounded-xl p-4" data-scenario="airport">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-deep-charcoal text-sm">At the Airport</p>
+                                        <p class="text-xs text-medium-gray">Travel conversations</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="scenario-card rounded-xl p-4" data-scenario="shopping">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-deep-charcoal text-sm">Shopping</p>
+                                        <p class="text-xs text-medium-gray">Buying items</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="scenario-card rounded-xl p-4" data-scenario="interview">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-deep-charcoal text-sm">Job Interview</p>
+                                        <p class="text-xs text-medium-gray">Professional talk</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="scenario-card rounded-xl p-4" data-scenario="hotel">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-deep-charcoal text-sm">Hotel Check-in</p>
+                                        <p class="text-xs text-medium-gray">Accommodation</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="scenario-card rounded-xl p-4" data-scenario="social">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-deep-charcoal text-sm">Social Gathering</p>
+                                        <p class="text-xs text-medium-gray">Casual chat</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Practice Settings -->
+                    <div class="bg-white rounded-2xl p-6 border border-gentle-lavender/20">
+                        <h3 class="font-semibold text-deep-charcoal mb-4">Practice Settings</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="flex items-center justify-between">
+                                    <span class="text-sm">Pronunciation Feedback</span>
+                                    <input type="checkbox" class="w-4 h-4 text-sage-green rounded" checked>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="flex items-center justify-between">
+                                    <span class="text-sm">Grammar Correction</span>
+                                    <input type="checkbox" class="w-4 h-4 text-sage-green rounded" checked>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="flex items-center justify-between">
+                                    <span class="text-sm">Vocabulary Suggestions</span>
+                                    <input type="checkbox" class="w-4 h-4 text-sage-green rounded">
+                                </label>
+                            </div>
+                            <div>
+                                <label class="block text-sm mb-2">Response Speed</label>
+                                <select class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm">
+                                    <option>Normal</option>
+                                    <option>Slow</option>
+                                    <option>Fast</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Conversation Area -->
+                <div class="lg:col-span-3">
+                    <div class="bg-white rounded-2xl border border-sage-green/20 overflow-hidden">
+                        <!-- Conversation Header -->
+                        <div class="bg-gradient-to-r from-sage-green/10 to-gentle-lavender/10 px-6 py-4 border-b border-sage-green/20">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-sage-green rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-deep-charcoal">AI Conversation Partner</h3>
+                                        <p class="text-sm text-medium-gray">Restaurant Scenario</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button class="p-2 rounded-lg bg-sage-green/10 hover:bg-sage-green/20 transition-colors">
+                                        <svg class="w-5 h-5 text-sage-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                        </svg>
+                                    </button>
+                                    <button class="p-2 rounded-lg bg-sage-green/10 hover:bg-sage-green/20 transition-colors">
+                                        <svg class="w-5 h-5 text-sage-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Messages Area -->
+                        <div class="h-96 overflow-y-auto p-6 space-y-4" id="conversation-messages">
+                            <div class="conversation-bubble ai">
+                                <p>Hello! Welcome to our restaurant. Do you have a reservation?</p>
+                            </div>
+                            <div class="conversation-bubble user">
+                                <p>No, I don't have a reservation. Do you have a table for two?</p>
+                            </div>
+                            <div class="conversation-bubble ai">
+                                <p>Of course! We have a nice table by the window. Would you like to see the menu?</p>
+                            </div>
+                            <div class="conversation-bubble user">
+                                <p>Yes, please. What do you recommend?</p>
+                            </div>
+                            <div class="conversation-bubble ai">
+                                <p>Our chef's special today is grilled salmon with lemon butter sauce. It's very popular!</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Input Area -->
+                        <div class="border-t border-sage-green/20 p-6">
+                            <div class="flex items-end space-x-4">
+                                <div class="flex-1">
+                                    <textarea 
+                                        id="message-input"
+                                        placeholder="Type your response or use voice..."
+                                        class="w-full px-4 py-3 border border-sage-green/20 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-sage-green/50 focus:border-transparent"
+                                        rows="2"
+                                    ></textarea>
+                                    
+                                    <!-- Pronunciation Wave -->
+                                    <div class="pronunciation-wave mt-2" id="pronunciation-wave">
+                                        <div class="absolute inset-0 flex items-center justify-center">
+                                            <span class="text-white text-sm font-medium">Listening...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex flex-col space-y-2">
+                                    <button 
+                                        id="record-button"
+                                        class="recording-button bg-sage-green text-white p-3 rounded-xl hover:bg-sage-green/90 transition-colors"
+                                        onclick="toggleRecording()"
+                                    >
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                                        </svg>
+                                    </button>
+                                    
+                                    <button 
+                                        class="bg-sage-green text-white p-3 rounded-xl hover:bg-sage-green/90 transition-colors"
+                                        onclick="sendMessage()"
+                                    >
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Quick Responses -->
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <button class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors" onclick="insertQuickResponse('I would like to order')">
+                                    I would like to order
+                                </button>
+                                <button class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors" onclick="insertQuickResponse('Can I have the bill?')">
+                                    Can I have the bill?
+                                </button>
+                                <button class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors" onclick="insertQuickResponse('This is delicious!')">
+                                    This is delicious!
+                                </button>
+                                <button class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors" onclick="insertQuickResponse('Thank you for your help')">
+                                    Thank you for your help
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Feedback Panel -->
+                    <div class="mt-6 bg-white rounded-2xl p-6 border border-gentle-lavender/20">
+                        <h3 class="font-semibold text-deep-charcoal mb-4">Conversation Feedback</h3>
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-deep-charcoal mb-1">Pronunciation</h4>
+                                <p class="text-2xl font-bold text-green-600">85%</p>
+                                <p class="text-xs text-medium-gray">Good clarity</p>
+                            </div>
+                            
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-deep-charcoal mb-1">Grammar</h4>
+                                <p class="text-2xl font-bold text-blue-600">92%</p>
+                                <p class="text-xs text-medium-gray">Excellent</p>
+                            </div>
+                            
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-deep-charcoal mb-1">Fluency</h4>
+                                <p class="text-2xl font-bold text-purple-600">78%</p>
+                                <p class="text-xs text-medium-gray">Keep practicing</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 p-4 bg-blue-50 rounded-xl">
+                            <h4 class="font-semibold text-deep-charcoal mb-2">Suggestions for Improvement:</h4>
+                            <ul class="text-sm text-medium-gray space-y-1">
+                                <li>• Try to speak more slowly for better clarity</li>
+                                <li>• Practice the pronunciation of "restaurant"</li>
+                                <li>• Use more connecting words like "however" and "therefore"</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-deep-charcoal text-white py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-2 mb-4">
+                    <div class="w-8 h-8 bg-gradient-to-br from-sage-green to-gentle-lavender rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">SE</span>
+                    </div>
+                    <span class="text-xl font-bold">SpeakEasy</span>
+                </div>
+                <p class="text-gray-400 mb-6">Empowering students to speak English with confidence</p>
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a>
+                </div>
+                <p class="text-gray-500 text-sm">© 2025 SpeakEasy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
